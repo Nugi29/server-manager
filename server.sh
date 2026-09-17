@@ -1,69 +1,61 @@
 #!/bin/bash
 
-# ==========================================
-# AWS Server Manager
-# ==========================================
+# Base directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-show_banner() {
-    clear
+# Source all component modules
+for module in "$SCRIPT_DIR"/modules/*.sh; do
+    if [ -f "$module" ]; then
+        # shellcheck disable=SC1090
+        source "$module"
+    fi
+done
 
-    echo "=========================================="
-    echo "          AWS SERVER MANAGER"
-    echo "=========================================="
-    echo
-}
-
-show_menu() {
-    echo "1. Server Information"
-    echo "2. Network Information"
-    echo "3. Service Manager"
-    echo "4. Systemd Manager"
-    echo "5. Process Manager"
-    echo "6. Log Manager"
-    echo "7. Resource Monitor"
-    echo "8. Application Manager"
-    echo "9. Security"
-    echo "10. Maintenance"
-    echo "0. Exit"
-    echo
-}
-
-server_information() {
-    echo
-    echo "========== SERVER INFORMATION =========="
-    echo
-    echo "Hostname : $(hostname)"
-    echo "Kernel   : $(uname -r)"
-    echo "OS       : $(uname -s)"
-    echo "Uptime   : $(uptime -p)"
-    echo
-}
-
+# Main Execution Loop
 while true
 do
-    show_banner
-    show_menu
+    showBanner
+    showMenu
 
     read -p "Enter your choice: " choice
 
-    case $choice in
-
-        1)
-            server_information
-            read -p "Press Enter to continue..."
-            ;;
-
-        0)
-            echo
-            echo "Goodbye!"
-            exit 0
-            ;;
-
-        *)
-            echo
-            echo "Invalid option!"
-            read -p "Press Enter to continue..."
-            ;;
-
-    esac
+    if [ "$choice" = "1" ]; then
+        serverInformation
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "2" ]; then
+        networkInformation
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "3" ]; then
+        serviceManager
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "4" ]; then
+        systemdManager
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "5" ]; then
+        processManager
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "6" ]; then
+        logManager
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "7" ]; then
+        resourceMonitor
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "8" ]; then
+        applicationManager
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "9" ]; then
+        security
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "10" ]; then
+        maintenance
+        read -p "Press Enter to continue..."
+    elif [ "$choice" = "0" ]; then
+        echo
+        echo "Goodbye!"
+        exit 0
+    else
+        echo
+        echo "Invalid option!"
+        read -p "Press Enter to continue..."
+    fi
 done
