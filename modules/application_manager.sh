@@ -1,15 +1,18 @@
 #!/bin/bash
 
 applicationManager() {
+    while true
+    do
+    clear
     echo
     echo "=========================================="
     echo "          APPLICATION MANAGER"
     echo "=========================================="
-    echo "1. Check Common Web Servers (Nginx/Apache/Caddy)"
-    echo "2. Check Container Runtime (Docker/Podman)"
-    echo "3. Check Databases (MySQL/PostgreSQL/Redis/MongoDB)"
-    echo "4. Check Installed Runtimes (Node/Python/Go/Java)"
-    echo "0. Back to Main Menu"
+    echo " [1] Check Common Web Servers (Nginx/Apache/Caddy)"
+    echo " [2] Check Container Runtime (Docker/Podman)"
+    echo " [3] Check Databases (MySQL/PostgreSQL/Redis/MongoDB)"
+    echo " [4] Check Installed Runtimes (Node/Python/Go/Java)"
+    echo " [0] Back to Main Menu"
     echo
     read -p "Choose an option: " app_choice
 
@@ -21,6 +24,15 @@ applicationManager() {
                 echo "$s is installed ($(systemctl is-active "$s" 2>/dev/null || echo "inactive"))"
             fi
         done
+
+        echo
+        read -p "Do you want to go Main Menu(Y/N): " op
+        if [ "$op" = "Y" ] || [ "$op" = "y" ];
+            then break;
+        else
+            continue;
+        fi
+
     elif [ "$app_choice" = "2" ]; then
         echo
         echo "--- Container Status ---"
@@ -28,6 +40,14 @@ applicationManager() {
             docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || echo "Docker daemon not running or requires sudo."
         else
             echo "Docker not installed."
+        fi
+
+        echo
+        read -p "Do you want to go Main Menu(Y/N): " op
+        if [ "$op" = "Y" ] || [ "$op" = "y" ];
+            then break;
+        else
+            continue;
         fi
     elif [ "$app_choice" = "3" ]; then
         echo
@@ -37,6 +57,15 @@ applicationManager() {
                 echo "$db service: $(systemctl is-active "$db" 2>/dev/null)"
             fi
         done
+
+        echo
+        read -p "Do you want to go Main Menu(Y/N): " op
+        if [ "$op" = "Y" ] || [ "$op" = "y" ];
+            then break;
+        else
+            continue;
+        fi
+
     elif [ "$app_choice" = "4" ]; then
         echo
         echo "--- Installed Runtimes ---"
@@ -44,9 +73,27 @@ applicationManager() {
         node --version 2>/dev/null && echo "Node.js: $(node --version)" || echo "Node.js: Not installed"
         go version 2>/dev/null || echo "Go: Not installed"
         java -version 2>&1 | head -n 1 || echo "Java: Not installed"
+
+        echo
+        read -p "Do you want to go Main Menu(Y/N): " op
+        if [ "$op" = "Y" ] || [ "$op" = "y" ];
+            then break;
+        else
+            continue;
+        fi
+
     elif [ "$app_choice" = "0" ]; then
         return 0
     else
+        echo
         echo "Invalid application option."
+        echo
+        read -p "Do you want to go Main Menu(Y/N): " op
+        if [ "$op" = "Y" ] || [ "$op" = "y" ];
+            then break;
+        else
+            continue;
+        fi
     fi
+    done
 }

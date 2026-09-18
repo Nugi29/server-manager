@@ -1,6 +1,9 @@
 #!/bin/bash
 
 resourceMonitor() {
+    while true
+    do
+    clear
     echo
     echo "=========================================="
     echo "            RESOURCE MONITOR"
@@ -22,4 +25,11 @@ resourceMonitor() {
     echo "--- Disk Usage by Filesystem ---"
     df -h -x tmpfs -x devtmpfs 2>/dev/null || df -h 2>/dev/null || echo "df command not available"
     echo
+    read -p "Do you want to go Main Menu(Y/N): " op
+    if [ "$op" = "Y" ] || [ "$op" = "y" ];
+        then break;
+    else
+        continue;
+    fi
+    done
 }

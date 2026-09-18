@@ -1,6 +1,9 @@
 #!/bin/bash
 
 networkInformation() {
+    while true
+    do
+    clear
     echo
     echo "=========================================="
     echo "         NETWORK INFORMATION"
@@ -17,4 +20,11 @@ networkInformation() {
     echo "Active Listening Ports (TCP/UDP):"
     ss -tuln 2>/dev/null || netstat -tuln 2>/dev/null || echo "ss/netstat command not available"
     echo
+    read -p "Do you want to go Main Menu(Y/N): " op
+    if [ "$op" = "Y" ] || [ "$op" = "y" ];
+        then break;
+    else
+        continue;
+    fi
+    done
 }
